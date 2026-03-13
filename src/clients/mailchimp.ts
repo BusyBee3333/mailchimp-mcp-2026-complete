@@ -680,4 +680,118 @@ export class MailchimpClient {
   async getRoot() {
     return this.get('/');
   }
+
+  // ===== WEBHOOKS =====
+
+  async getWebhooks(listId: string) {
+    return this.get(`/lists/${listId}/webhooks`);
+  }
+
+  async getWebhook(listId: string, webhookId: string) {
+    return this.get(`/lists/${listId}/webhooks/${webhookId}`);
+  }
+
+  async createWebhook(listId: string, data: {
+    url: string;
+    events?: {
+      subscribe?: boolean;
+      unsubscribe?: boolean;
+      profile?: boolean;
+      cleaned?: boolean;
+      upemail?: boolean;
+      campaign?: boolean;
+    };
+    sources?: {
+      user?: boolean;
+      admin?: boolean;
+      api?: boolean;
+    };
+  }) {
+    return this.post(`/lists/${listId}/webhooks`, data);
+  }
+
+  async updateWebhook(listId: string, webhookId: string, data: {
+    url?: string;
+    events?: {
+      subscribe?: boolean;
+      unsubscribe?: boolean;
+      profile?: boolean;
+      cleaned?: boolean;
+      upemail?: boolean;
+      campaign?: boolean;
+    };
+    sources?: {
+      user?: boolean;
+      admin?: boolean;
+      api?: boolean;
+    };
+  }) {
+    return this.patch(`/lists/${listId}/webhooks/${webhookId}`, data);
+  }
+
+  async deleteWebhook(listId: string, webhookId: string) {
+    return this.delete(`/lists/${listId}/webhooks/${webhookId}`);
+  }
+
+  // ===== MERGE FIELDS =====
+
+  async getMergeFields(listId: string, params?: {
+    count?: number;
+    offset?: number;
+    type?: string;
+    required?: boolean;
+  }) {
+    return this.get(`/lists/${listId}/merge-fields`, params);
+  }
+
+  async getMergeField(listId: string, mergeId: number) {
+    return this.get(`/lists/${listId}/merge-fields/${mergeId}`);
+  }
+
+  async createMergeField(listId: string, data: {
+    tag: string;
+    name: string;
+    type: string;
+    required?: boolean;
+    default_value?: string;
+    public?: boolean;
+    display_order?: number;
+    options?: {
+      default_country?: number;
+      phone_format?: string;
+      date_format?: string;
+      choices?: string[];
+      size?: number;
+    };
+    help_text?: string;
+  }) {
+    return this.post(`/lists/${listId}/merge-fields`, data);
+  }
+
+  async updateMergeField(listId: string, mergeId: number, data: {
+    tag?: string;
+    name?: string;
+    required?: boolean;
+    default_value?: string;
+    public?: boolean;
+    display_order?: number;
+    options?: Record<string, any>;
+    help_text?: string;
+  }) {
+    return this.patch(`/lists/${listId}/merge-fields/${mergeId}`, data);
+  }
+
+  async deleteMergeField(listId: string, mergeId: number) {
+    return this.delete(`/lists/${listId}/merge-fields/${mergeId}`);
+  }
+
+  // ===== AUDIENCE STATS =====
+
+  async getAudienceStats(listId: string) {
+    return this.get(`/lists/${listId}`, { fields: 'id,name,stats' });
+  }
+
+  async searchMembers2(query: string, params?: { list_id?: string; count?: number; offset?: number }) {
+    return this.get('/search-members', { query, ...params });
+  }
 }

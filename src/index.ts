@@ -19,6 +19,9 @@ import { registerLandingPageTools } from './tools/landing-pages-tools.js';
 import { registerEcommerceTools } from './tools/ecommerce-tools.js';
 import { registerTagTools } from './tools/tags-tools.js';
 import { registerSearchTools } from './tools/search-tools.js';
+import { registerWebhookTools } from './tools/webhooks-tools.js';
+import { registerMergeFieldTools } from './tools/merge-fields-tools.js';
+import { registerAudienceTools } from './tools/audiences-tools.js';
 
 // Get API key from environment
 const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY;
@@ -58,7 +61,10 @@ const toolRegistry: Record<string, any> = {
   ...registerLandingPageTools(client),
   ...registerEcommerceTools(client),
   ...registerTagTools(client),
-  ...registerSearchTools(client)
+  ...registerSearchTools(client),
+  ...registerWebhookTools(client),
+  ...registerMergeFieldTools(client),
+  ...registerAudienceTools(client),
 };
 
 // List tools handler
